@@ -21,13 +21,25 @@ async function main() {
 
   const { Metadata, QuestionContent, SolutionContent } = jsonData.Question;
 
+  // Handle structured parts of questions and solutions
+  const structuredQuestionParts = QuestionContent.Parts.map((part) => ({
+    part: part.Part,
+    question: part.Question,
+  }));
+
+  const structuredSolutionParts = SolutionContent.Parts.map((part) => ({
+    part: part.Part,
+    solution: part.Solution,
+    markingScheme: part.MarkingScheme,
+  }));
+
   try {
     // Insert the question into the database
     await prisma.question.create({
       data: {
         title: Metadata.QuestionTitle || 'Untitled Question',
-        content: QuestionContent.Text || '',
-        solution: SolutionContent.Parts.map((part) => `${part.Part}: ${part.Solution}`).join('\n') || '',
+        content: JSON.stringify(structuredQuestionParts),
+        solution: JSON.stringify(structuredSolutionParts),
         examBoard: Metadata.ExamBoard || '',
         syllabusCode: Metadata.SyllabusCode || '',
         yearOfExam: Metadata.YearOfExam || null,
@@ -38,7 +50,7 @@ async function main() {
         mathTopic: Metadata.MathTopic || '',
         difficulty: Metadata.DifficultyLevel || null,
         topicsCovered: Metadata.TopicsCovered || [],
-        marksAllocation: Metadata.MarksAllocation || {},
+        marksAllocation: Metadata.MarksAllocation, // Directly use as it is a JSON object
         imageUrls: Metadata.ImageUrl || [],
       },
     });
