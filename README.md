@@ -75,6 +75,10 @@ Replace USER and PASSWORD with your own settings
 ```bash
 npx prisma migrate dev --name init
 ```
+### Store Data into the Database
+```bash
+node scripts/importQuestions.mjs
+```
 
 ### Running the Application
 
