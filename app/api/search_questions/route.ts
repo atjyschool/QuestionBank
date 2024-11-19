@@ -3,6 +3,27 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'Question ID is required' }, { status: 400 });
+    }
+
+    await prisma.question.delete({
+      where: { id: Number(id) },
+    });
+
+    return NextResponse.json({ message: 'Question deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting question:', error);
+    return NextResponse.json({ error: 'Failed to delete question' }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { searchTerm, selectedAttributes } = body;

@@ -127,6 +127,27 @@ export default function QuestionSearch() {
     }
   }
 
+  const handleDelete = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this question?')) return;
+
+    try {
+      const response = await fetch(`/api/search_questions?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete the question.');
+      }
+
+      // Remove the deleted question from the state
+      setSearchResults((prev) => prev.filter((q) => q.id !== id));
+      alert('Question deleted successfully.');
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred while deleting the question.');
+    }
+  };
+
   const renderAttributeSelector = (category: string, options: AttributeOption[]) => (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-700">{category}</label>
@@ -154,7 +175,15 @@ export default function QuestionSearch() {
 
   const renderQuestionContent = (question: Question) => (
     <div key={question.id} className="p-4 border rounded shadow-sm bg-white mb-4">
-      <h2 className="font-semibold text-lg mb-2">{question.title}</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="font-semibold text-lg mb-2">{question.title}</h2>
+        <button
+          onClick={() => handleDelete(question.id)}
+          className="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </div>
       <div className="mb-4">
         <strong>Content:</strong>
         <Latex>{question.content.replace(/\\\\/g, "\\")}</Latex>
@@ -185,7 +214,6 @@ export default function QuestionSearch() {
       <p><small>Updated At: {new Date(question.updatedAt).toLocaleString()}</small></p>
     </div>
   );
-  
 
   return (
     <div className="container mx-auto p-4">

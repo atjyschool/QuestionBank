@@ -2,16 +2,16 @@
   "Questions": [
     {
       "Metadata": {
-        "QuestionTitle": "Cubic Equation Roots and Derived Properties test14",
+        "QuestionTitle": "Cubic Equation Roots and Derived Properties test1",
         "Source": "Cambridge International AS & A Level Mathematics: Pure Mathematics 1 Past Paper",
-        "ExamBoard": "AQA",
-        "SyllabusCode": "9709",
-        "YearOfExam": 2023,
-        "Session": "June",
-        "PaperNumber": "Paper 1",
+        "ExamBoard": "CAIE",
+        "SyllabusCode": "9708",
+        "YearOfExam": 2022,
+        "Session": "November",
+        "PaperNumber": "Paper 2",
         "QuestionNumber": 1,
         "QuestionType": "Structured Question",
-        "MathTopic": "Algebra",
+        "MathTopic": "Calculus",
         "TopicsCovered": [
           "Cubic Equations",
           "Vietas Formulas",
@@ -74,7 +74,7 @@
     },
     {
       "Metadata": {
-        "QuestionTitle": "Cubic Equation Roots and Derived Properties test15",
+        "QuestionTitle": "Cubic Equation Roots and Derived Properties test2",
         "Source": "Cambridge International AS & A Level Mathematics: Pure Mathematics 1 Past Paper",
         "ExamBoard": "AQA",
         "SyllabusCode": "9709",
