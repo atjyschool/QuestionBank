@@ -1,19 +1,8 @@
 'use client'
 
 import { useState } from "react"
-var Latex = require("react-latex");
-import "katex/dist/katex.min.css";
-
-interface Part {
-  part: string
-  question: string
-}
-
-interface SolutionPart {
-  part: string
-  solution: string
-  markingScheme: string
-}
+var Latex = require("react-latex")
+import "katex/dist/katex.min.css"
 
 interface Question {
   id: number
@@ -36,13 +25,83 @@ interface Question {
   updatedAt: string
 }
 
+interface AttributeOption {
+  label: string
+  value: string
+}
+
+const examBoards: AttributeOption[] = [
+  { label: "CAIE", value: "CAIE" },
+  { label: "Edexcel", value: "Edexcel" },
+  { label: "AQA", value: "AQA" },
+]
+
+const syllabusCodes: AttributeOption[] = [
+  { label: "9709", value: "9709" },
+  { label: "9231", value: "9231" },
+  { label: "8MA0", value: "8MA0" },
+]
+
+const years: AttributeOption[] = Array.from({ length: 10 }, (_, i) => ({
+  label: `${2015 + i}`,
+  value: `${2015 + i}`,
+}))
+
+const sessions: AttributeOption[] = [
+  { label: "June", value: "June" },
+  { label: "November", value: "November" },
+  { label: "March", value: "March" },
+]
+
+const paperNumbers: AttributeOption[] = [
+  { label: "Paper 1", value: "Paper 1" },
+  { label: "Paper 2", value: "Paper 2" },
+  { label: "Paper 3", value: "Paper 3" },
+]
+
+const questionTypes: AttributeOption[] = [
+  { label: "Structured Question", value: "Structured Question" },
+  { label: "Multiple Choice", value: "Multiple Choice" },
+  { label: "Short Answer", value: "Short Answer" },
+]
+
+const mathTopics: AttributeOption[] = [
+  { label: "Algebra", value: "Algebra" },
+  { label: "Calculus", value: "Calculus" },
+  { label: "Geometry", value: "Geometry" },
+  { label: "Statistics", value: "Statistics" },
+]
+
+const difficulties: AttributeOption[] = [
+  { label: "Easy", value: "Easy" },
+  { label: "Moderate", value: "Moderate" },
+  { label: "Hard", value: "Hard" },
+]
+
 export default function QuestionSearch() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [topic, setTopic] = useState('')
-  const [difficulty, setDifficulty] = useState('')
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string[]>>({
+    examBoard: [],
+    syllabusCode: [],
+    yearOfExam: [],
+    session: [],
+    paperNumber: [],
+    questionType: [],
+    mathTopic: [],
+    difficulty: [],
+  })
   const [searchResults, setSearchResults] = useState<Question[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const handleAttributeChange = (category: string, value: string) => {
+    setSelectedAttributes(prev => ({
+      ...prev,
+      [category]: prev[category as keyof typeof prev].includes(value)
+        ? prev[category as keyof typeof prev].filter(item => item !== value)
+        : [...prev[category as keyof typeof prev], value]
+    }))
+  }
 
   const handleSearch = async () => {
     setIsLoading(true)
@@ -53,7 +112,7 @@ export default function QuestionSearch() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ searchTerm, topic, difficulty }),
+        body: JSON.stringify({ searchTerm, selectedAttributes }),
       })
       if (!response.ok) {
         throw new Error('Failed to fetch search results')
@@ -68,44 +127,41 @@ export default function QuestionSearch() {
     }
   }
 
+  const renderAttributeSelector = (category: string, options: AttributeOption[]) => (
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">{category}</label>
+      <div className="flex flex-wrap gap-2">
+        {options.map((option) => (
+          <div key={option.value} className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id={`${category}-${option.value}`}
+              checked={(selectedAttributes[category as keyof typeof selectedAttributes] as string[]).includes(option.value)}
+              onChange={() => handleAttributeChange(category, option.value)}
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <label
+              htmlFor={`${category}-${option.value}`}
+              className="text-sm font-medium text-gray-700"
+            >
+              {option.label}
+            </label>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+
   const renderQuestionContent = (question: Question) => (
-    <div key={question.id} className="p-4 border rounded shadow-sm bg-white">
+    <div key={question.id} className="p-4 border rounded shadow-sm bg-white mb-4">
       <h2 className="font-semibold text-lg mb-2">{question.title}</h2>
       <div className="mb-4">
         <strong>Content:</strong>
-        <ul>
-          {(() => {
-            try {
-              const parts = JSON.parse(question.content) as Part[]
-              return parts.map((part, idx) => (
-                <li key={idx}>
-                  <strong>Part {part.part}:</strong> <Latex>{part.question}</Latex>
-                </li>
-              ))
-            } catch (e) {
-              return <li>Error displaying parts</li>
-            }
-          })()}
-        </ul>
+        <Latex>{question.content.replace(/\\\\/g, "\\")}</Latex>
       </div>
       <div className="mb-4">
         <strong>Solution:</strong>
-        <ul>
-          {(() => {
-            try {
-              const solutions = JSON.parse(question.solution) as SolutionPart[]
-              return solutions.map((part, idx) => (
-                <li key={idx}>
-                  <strong>Part {part.part}:</strong> <Latex>{part.solution}</Latex>
-                  <br />
-                  <strong>Marking Scheme:</strong> <Latex>{part.markingScheme}</Latex>
-                </li>
-              ))
-            } catch (e) {
-              return <li>Error displaying solutions</li>
-            }
-          })()}
-        </ul>
+        <Latex>{question.solution.replace(/\\\\/g, "\\")}</Latex>
       </div>
       <p><strong>Exam Board:</strong> {question.examBoard}</p>
       <p><strong>Syllabus Code:</strong> {question.syllabusCode}</p>
@@ -117,7 +173,7 @@ export default function QuestionSearch() {
       <p><strong>Math Topic:</strong> {question.mathTopic}</p>
       <p><strong>Difficulty:</strong> {question.difficulty || "N/A"}</p>
       <p><strong>Topics Covered:</strong> {question.topicsCovered.join(", ")}</p>
-      <p><strong>Marks Allocation:</strong> <Latex>{JSON.stringify(question.marksAllocation)}</Latex></p>
+      <p><strong>Marks Allocation:</strong> <Latex>{JSON.stringify(question.marksAllocation, null, 2)}</Latex></p>
       <p><strong>Images:</strong> 
         {question.imageUrls.map((url, idx) => (
           <a key={idx} href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline mr-2">
@@ -128,53 +184,41 @@ export default function QuestionSearch() {
       <p><small>Created At: {new Date(question.createdAt).toLocaleString()}</small></p>
       <p><small>Updated At: {new Date(question.updatedAt).toLocaleString()}</small></p>
     </div>
-  )
+  );
+  
 
   return (
-    <div>
-      <div className="mb-4 space-y-4">
-        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-          <input
-            type="text"
-            placeholder="Search questions..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label="Search questions"
-          />
-          <select
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label="Select topic"
-          >
-            <option value="">Select topic</option>
-            <option value="Algebra">Algebra</option>
-            <option value="Integration">Geometry</option>
-            <option value="calculus">Calculus</option>
-          </select>
-          <select
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label="Select difficulty"
-          >
-            <option value="">Select difficulty</option>
-            <option value="Easy">Easy</option>
-            <option value="Moderate">Moderate</option>
-            <option value="Hard">Hard</option>
-          </select>
-          <button
-            onClick={handleSearch}
-            className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Searching...' : 'Search'}
-          </button>
-        </div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Question Search</h1>
+      <div className="mb-4">
+        <label htmlFor="searchTerm" className="block text-sm font-medium text-gray-700">Search questions:</label>
+        <input
+          id="searchTerm"
+          type="text"
+          placeholder="e.g., cubic equation"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        />
       </div>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="grid gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        {renderAttributeSelector("examBoard", examBoards)}
+        {renderAttributeSelector("yearOfExam", years)}
+        {renderAttributeSelector("session", sessions)}
+        {renderAttributeSelector("paperNumber", paperNumbers)}
+        {renderAttributeSelector("questionType", questionTypes)}
+        {renderAttributeSelector("mathTopic", mathTopics)}
+        {renderAttributeSelector("difficulty", difficulties)}
+      </div>
+      <button
+        onClick={handleSearch}
+        disabled={isLoading}
+        className="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+      >
+        {isLoading ? 'Searching...' : 'Search'}
+      </button>
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+      <div className="mt-8">
         {searchResults.length > 0 ? (
           searchResults.map(renderQuestionContent)
         ) : (
