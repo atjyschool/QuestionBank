@@ -1,74 +1,148 @@
 {
-  "Question": {
-    "Metadata": {
-      "QuestionTitle": "Cubic Equation Roots and Derived Properties test13",
-      "Source": "Cambridge International AS & A Level Mathematics: Pure Mathematics 1 Past Paper",
-      "ExamBoard": "AQA",
-      "SyllabusCode": "9709",
-      "YearOfExam": 2023,
-      "Session": "June",
-      "PaperNumber": "Paper 1",
-      "QuestionNumber": 1,
-      "QuestionType": "Structured Question",
-      "MathTopic": "Algebra",
-      "TopicsCovered": [
-        "Cubic Equations",
-        "Vietas Formulas",
-        "Derived Roots and New Equations"
-      ],
-      "MarksAllocation": {
-        "PartA": 1,
-        "PartB": 2,
-        "PartC": 1,
-        "PartD": 2
+  "Questions": [
+    {
+      "Metadata": {
+        "QuestionTitle": "Cubic Equation Roots and Derived Properties test14",
+        "Source": "Cambridge International AS & A Level Mathematics: Pure Mathematics 1 Past Paper",
+        "ExamBoard": "AQA",
+        "SyllabusCode": "9709",
+        "YearOfExam": 2023,
+        "Session": "June",
+        "PaperNumber": "Paper 1",
+        "QuestionNumber": 1,
+        "QuestionType": "Structured Question",
+        "MathTopic": "Algebra",
+        "TopicsCovered": [
+          "Cubic Equations",
+          "Vietas Formulas",
+          "Derived Roots and New Equations"
+        ],
+        "MarksAllocation": {
+          "PartA": 1,
+          "PartB": 2,
+          "PartC": 1,
+          "PartD": 2
+        },
+        "DifficultyLevel": "Moderate",
+        "ImageUrl": []
       },
-      "DifficultyLevel": "Moderate",
-      "ImageUrl": []
+      "QuestionContent": {
+        "Text": "The cubic equation \\(2x^3 + x^2 - px - 5 = 0\\), where \\(p\\) is a positive constant, has roots \\(\\alpha, \\beta, \\gamma\\).",
+        "Parts": [
+          {
+            "Part": "a",
+            "Question": "State, in terms of \\(p\\), the value of \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha\\)."
+          },
+          {
+            "Part": "b",
+            "Question": "Find the value of \\(\\alpha^2\\beta\\gamma + \\alpha\\beta^2\\gamma + \\alpha\\beta\\gamma^2\\)."
+          },
+          {
+            "Part": "c",
+            "Question": "Deduce a cubic equation whose roots are \\(\\alpha\\beta, \\beta\\gamma, \\alpha\\gamma\\)."
+          },
+          {
+            "Part": "d",
+            "Question": "Given that \\(\\alpha^2 + \\beta^2 + \\gamma^2 = \\frac{1}{3}\\), find the value of \\(p\\)."
+          }
+        ]
+      },
+      "SolutionContent": {
+        "Parts": [
+          {
+            "Part": "a",
+            "Solution": "Using Vieta’s formulas, \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = \\frac{\\text{Coefficient of } x}{\\text{Leading coefficient}} = \\frac{-p}{2}\\). Thus, \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = -\\frac{p}{2}\\).",
+            "MarkingScheme": "B1 (1 mark) for correctly stating \\(-\\frac{p}{2}\\)."
+          },
+          {
+            "Part": "b",
+            "Solution": "The sum is \\(\\alpha^2\\beta\\gamma + \\alpha\\beta^2\\gamma + \\alpha\\beta\\gamma^2 = \\alpha\\beta\\gamma(\\alpha + \\beta + \\gamma)\\). Using Vieta’s, \\(\\alpha + \\beta + \\gamma = -\\frac{1}{2}\\) and \\(\\alpha\\beta\\gamma = \\frac{5}{2}\\), we get \\(-\\frac{5}{4}\\).",
+            "MarkingScheme": "M1 (1 mark) for using the correct formula, A1 (1 mark) for the correct final answer \\(-\\frac{5}{4}\\)."
+          },
+          {
+            "Part": "c",
+            "Solution": "The roots of the new cubic equation are \\(\\alpha\\beta, \\beta\\gamma, \\alpha\\gamma\\). Using Vieta’s: \\((\\alpha\\beta)(\\beta\\gamma)(\\alpha\\gamma) = (\\alpha\\beta\\gamma)^2 = \\frac{25}{4}\\). Sum of roots: \\(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma = -\\frac{p}{2}\\). The equation is \\(4z^3 + 2pz^2 - 5z - 25 = 0\\).",
+            "MarkingScheme": "B1FT (1 mark) for correct cubic equation."
+          },
+          {
+            "Part": "d",
+            "Solution": "Using \\((\\alpha + \\beta + \\gamma)^2 - 2(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma)\\), substitute \\((\\alpha + \\beta + \\gamma)^2 = \\frac{1}{4}\\) and \\(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma = -\\frac{p}{2}\\). Solve: \\(p = \\frac{1}{12}\\).",
+            "MarkingScheme": "M1 (1 mark) for using correct formula, A1 (1 mark) for final answer \\(p = \\frac{1}{12}\\)."
+          }
+        ]
+      }
     },
-    "QuestionContent": {
-      "Text": "The cubic equation \\(2x^3 + x^2 - px - 5 = 0\\), where \\(p\\) is a positive constant, has roots \\(\\alpha, \\beta, \\gamma\\).",
-      "Parts": [
-        {
-          "Part": "a",
-          "Question": "State, in terms of \\(p\\), the value of \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha\\)."
+    {
+      "Metadata": {
+        "QuestionTitle": "Cubic Equation Roots and Derived Properties test15",
+        "Source": "Cambridge International AS & A Level Mathematics: Pure Mathematics 1 Past Paper",
+        "ExamBoard": "AQA",
+        "SyllabusCode": "9709",
+        "YearOfExam": 2023,
+        "Session": "June",
+        "PaperNumber": "Paper 1",
+        "QuestionNumber": 1,
+        "QuestionType": "Structured Question",
+        "MathTopic": "Algebra",
+        "TopicsCovered": [
+          "Cubic Equations",
+          "Vietas Formulas",
+          "Derived Roots and New Equations"
+        ],
+        "MarksAllocation": {
+          "PartA": 1,
+          "PartB": 2,
+          "PartC": 1,
+          "PartD": 2
         },
-        {
-          "Part": "b",
-          "Question": "Find the value of \\(\\alpha^2\\beta\\gamma + \\alpha\\beta^2\\gamma + \\alpha\\beta\\gamma^2\\)."
-        },
-        {
-          "Part": "c",
-          "Question": "Deduce a cubic equation whose roots are \\(\\alpha\\beta, \\beta\\gamma, \\alpha\\gamma\\)."
-        },
-        {
-          "Part": "d",
-          "Question": "Given that \\(\\alpha^2 + \\beta^2 + \\gamma^2 = \\frac{1}{3}\\), find the value of \\(p\\)."
-        }
-      ]
-    },
-    "SolutionContent": {
-      "Parts": [
-        {
-          "Part": "a",
-          "Solution": "Using Vieta’s formulas, \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = \\frac{\\text{Coefficient of } x}{\\text{Leading coefficient}} = \\frac{-p}{2}\\). Thus, \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = -\\frac{p}{2}\\).",
-          "MarkingScheme": "B1 (1 mark) for correctly stating \\(-\\frac{p}{2}\\)."
-        },
-        {
-          "Part": "b",
-          "Solution": "The sum is \\(\\alpha^2\\beta\\gamma + \\alpha\\beta^2\\gamma + \\alpha\\beta\\gamma^2 = \\alpha\\beta\\gamma(\\alpha + \\beta + \\gamma)\\). Using Vieta’s, \\(\\alpha + \\beta + \\gamma = -\\frac{1}{2}\\) and \\(\\alpha\\beta\\gamma = \\frac{5}{2}\\), we get \\(-\\frac{5}{4}\\).",
-          "MarkingScheme": "M1 (1 mark) for using the correct formula, A1 (1 mark) for the correct final answer \\(-\\frac{5}{4}\\)."
-        },
-        {
-          "Part": "c",
-          "Solution": "The roots of the new cubic equation are \\(\\alpha\\beta, \\beta\\gamma, \\alpha\\gamma\\). Using Vieta’s: \\((\\alpha\\beta)(\\beta\\gamma)(\\alpha\\gamma) = (\\alpha\\beta\\gamma)^2 = \\frac{25}{4}\\). Sum of roots: \\(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma = -\\frac{p}{2}\\). The equation is \\(4z^3 + 2pz^2 - 5z - 25 = 0\\).",
-          "MarkingScheme": "B1FT (1 mark) for correct cubic equation."
-        },
-        {
-          "Part": "d",
-          "Solution": "Using \\((\\alpha + \\beta + \\gamma)^2 - 2(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma)\\), substitute \\((\\alpha + \\beta + \\gamma)^2 = \\frac{1}{4}\\) and \\(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma = -\\frac{p}{2}\\). Solve: \\(p = \\frac{1}{12}\\).",
-          "MarkingScheme": "M1 (1 mark) for using correct formula, A1 (1 mark) for final answer \\(p = \\frac{1}{12}\\)."
-        }
-      ]
+        "DifficultyLevel": "Moderate",
+        "ImageUrl": []
+      },
+      "QuestionContent": {
+        "Text": "The cubic equation \\(2x^3 + x^2 - px - 5 = 0\\), where \\(p\\) is a positive constant, has roots \\(\\alpha, \\beta, \\gamma\\).",
+        "Parts": [
+          {
+            "Part": "a",
+            "Question": "State, in terms of \\(p\\), the value of \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha\\)."
+          },
+          {
+            "Part": "b",
+            "Question": "Find the value of \\(\\alpha^2\\beta\\gamma + \\alpha\\beta^2\\gamma + \\alpha\\beta\\gamma^2\\)."
+          },
+          {
+            "Part": "c",
+            "Question": "Deduce a cubic equation whose roots are \\(\\alpha\\beta, \\beta\\gamma, \\alpha\\gamma\\)."
+          },
+          {
+            "Part": "d",
+            "Question": "Given that \\(\\alpha^2 + \\beta^2 + \\gamma^2 = \\frac{1}{3}\\), find the value of \\(p\\)."
+          }
+        ]
+      },
+      "SolutionContent": {
+        "Parts": [
+          {
+            "Part": "a",
+            "Solution": "Using Vieta’s formulas, \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = \\frac{\\text{Coefficient of } x}{\\text{Leading coefficient}} = \\frac{-p}{2}\\). Thus, \\(\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = -\\frac{p}{2}\\).",
+            "MarkingScheme": "B1 (1 mark) for correctly stating \\(-\\frac{p}{2}\\)."
+          },
+          {
+            "Part": "b",
+            "Solution": "The sum is \\(\\alpha^2\\beta\\gamma + \\alpha\\beta^2\\gamma + \\alpha\\beta\\gamma^2 = \\alpha\\beta\\gamma(\\alpha + \\beta + \\gamma)\\). Using Vieta’s, \\(\\alpha + \\beta + \\gamma = -\\frac{1}{2}\\) and \\(\\alpha\\beta\\gamma = \\frac{5}{2}\\), we get \\(-\\frac{5}{4}\\).",
+            "MarkingScheme": "M1 (1 mark) for using the correct formula, A1 (1 mark) for the correct final answer \\(-\\frac{5}{4}\\)."
+          },
+          {
+            "Part": "c",
+            "Solution": "The roots of the new cubic equation are \\(\\alpha\\beta, \\beta\\gamma, \\alpha\\gamma\\). Using Vieta’s: \\((\\alpha\\beta)(\\beta\\gamma)(\\alpha\\gamma) = (\\alpha\\beta\\gamma)^2 = \\frac{25}{4}\\). Sum of roots: \\(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma = -\\frac{p}{2}\\). The equation is \\(4z^3 + 2pz^2 - 5z - 25 = 0\\).",
+            "MarkingScheme": "B1FT (1 mark) for correct cubic equation."
+          },
+          {
+            "Part": "d",
+            "Solution": "Using \\((\\alpha + \\beta + \\gamma)^2 - 2(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma)\\), substitute \\((\\alpha + \\beta + \\gamma)^2 = \\frac{1}{4}\\) and \\(\\alpha\\beta + \\beta\\gamma + \\alpha\\gamma = -\\frac{p}{2}\\). Solve: \\(p = \\frac{1}{12}\\).",
+            "MarkingScheme": "M1 (1 mark) for using correct formula, A1 (1 mark) for final answer \\(p = \\frac{1}{12}\\)."
+          }
+        ]
+      }
     }
-  }
+  ]
 }
