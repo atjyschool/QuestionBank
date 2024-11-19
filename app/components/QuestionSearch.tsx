@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react"
 var Latex = require("react-latex")
 import "katex/dist/katex.min.css"
 
@@ -16,6 +16,7 @@ interface Question {
   paperNumber: string
   questionNumber: number
   questionType: string
+  level:string
   mathTopic: string
   difficulty?: string
   topicsCovered: string[]
@@ -59,6 +60,12 @@ const paperNumbers: AttributeOption[] = [
   { label: "Paper 3", value: "Paper 3" },
 ]
 
+const level: AttributeOption[] = [
+  { label: "P1", value: "P1" },
+  { label: "P2", value: "P2" },
+  { label: "P3", value: "P3" },
+]
+
 const questionTypes: AttributeOption[] = [
   { label: "Structured Question", value: "Structured Question" },
   { label: "Multiple Choice", value: "Multiple Choice" },
@@ -87,6 +94,7 @@ export default function QuestionSearch() {
     session: [],
     paperNumber: [],
     questionType: [],
+    level:[],
     mathTopic: [],
     difficulty: [],
   })
@@ -185,13 +193,32 @@ export default function QuestionSearch() {
         </button>
       </div>
       <div className="mb-4">
-        <strong>Content:</strong>
-        <Latex>{question.content.replace(/\\\\/g, "\\")}</Latex>
-      </div>
-      <div className="mb-4">
-        <strong>Solution:</strong>
-        <Latex>{question.solution.replace(/\\\\/g, "\\")}</Latex>
-      </div>
+  <strong>Question:</strong>
+  <ul className="list-disc pl-6">
+    {JSON.parse(question.content).map((part: { part: string; question: string }, index: Key | null | undefined) => (
+      <li key={index} className="mb-2">
+        <strong>Part {part.part.toUpperCase()}:</strong>{" "}
+        <Latex>{part.question.replace(/\\\\/g, "\\")}</Latex>
+      </li>
+    ))}
+  </ul>
+</div>
+<div className="mb-4">
+  <strong>Solution:</strong>
+  <ul className="list-disc pl-6">
+    {JSON.parse(question.solution).map((solution: { part: string; solution: string; markingScheme: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined }, index: Key | null | undefined) => (
+      <li key={index} className="mb-2">
+        <strong>Part {solution.part.toUpperCase()}:</strong>{" "}
+        <Latex>{solution.solution.replace(/\\\\/g, "\\")}</Latex>
+        <div className="text-gray-600 text-sm">
+          <strong>Marking Scheme:</strong> 
+          <Latex>{solution.markingScheme}</Latex>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
       <p><strong>Exam Board:</strong> {question.examBoard}</p>
       <p><strong>Syllabus Code:</strong> {question.syllabusCode}</p>
       <p><strong>Year of Exam:</strong> {question.yearOfExam}</p>
@@ -199,6 +226,7 @@ export default function QuestionSearch() {
       <p><strong>Paper Number:</strong> {question.paperNumber}</p>
       <p><strong>Question Number:</strong> {question.questionNumber}</p>
       <p><strong>Question Type:</strong> {question.questionType}</p>
+      <p><strong>Question Level:</strong> {question.level}</p>
       <p><strong>Math Topic:</strong> {question.mathTopic}</p>
       <p><strong>Difficulty:</strong> {question.difficulty || "N/A"}</p>
       <p><strong>Topics Covered:</strong> {question.topicsCovered.join(", ")}</p>
@@ -235,6 +263,7 @@ export default function QuestionSearch() {
         {renderAttributeSelector("session", sessions)}
         {renderAttributeSelector("paperNumber", paperNumbers)}
         {renderAttributeSelector("questionType", questionTypes)}
+        {renderAttributeSelector("level", level)}
         {renderAttributeSelector("mathTopic", mathTopics)}
         {renderAttributeSelector("difficulty", difficulties)}
       </div>

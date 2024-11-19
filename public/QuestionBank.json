@@ -11,6 +11,7 @@
         "PaperNumber": "Paper 2",
         "QuestionNumber": 1,
         "QuestionType": "Structured Question",
+        "Level": "P1",
         "MathTopic": "Calculus",
         "TopicsCovered": [
           "Cubic Equations",
@@ -83,6 +84,7 @@
         "PaperNumber": "Paper 1",
         "QuestionNumber": 1,
         "QuestionType": "Structured Question",
+        "Level": "P2",
         "MathTopic": "Algebra",
         "TopicsCovered": [
           "Cubic Equations",

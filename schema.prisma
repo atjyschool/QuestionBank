@@ -20,6 +20,7 @@ model Question {
   questionNumber  Int       // Question number
   questionType    String    // Question type (e.g., Structured Question)
   mathTopic       String    // Math topic (e.g., Algebra)
+  level           String?    // Level of the question
   difficulty      String?   // Difficulty level (optional)
   topicsCovered   String[]  // Array of knowledge points or tags
   marksAllocation Json      // JSON for marks allocation

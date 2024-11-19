@@ -48,6 +48,7 @@ async function main() {
           paperNumber: Metadata.PaperNumber || '',
           questionNumber: Metadata.QuestionNumber || null,
           questionType: Metadata.QuestionType || '',
+          level: Metadata.Level || '',
           mathTopic: Metadata.MathTopic || '',
           difficulty: Metadata.DifficultyLevel || null,
           topicsCovered: Metadata.TopicsCovered || [],
