@@ -11,106 +11,9 @@ import {
 } from "react";
 var Latex = require("react-latex");
 import "katex/dist/katex.min.css";
-
-interface Question {
-  id: number;
-  title: string;
-  content: string;
-  solution: string;
-  examBoard: string;
-  syllabusCode: string;
-  yearOfExam: number;
-  session: string;
-  paperNumber: string;
-  questionNumber: number;
-  questionType: string;
-  level: string;
-  mathTopic: string;
-  difficulty?: string;
-  topicsCovered: string[];
-  marksAllocation: Record<string, number>;
-  imageUrls: string[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface AttributeOption {
-  label: string;
-  value: string;
-}
-
-const examBoards: AttributeOption[] = [
-  { label: "CAIE", value: "CAIE" },
-  { label: "Edexcel", value: "Edexcel" },
-  { label: "AQA", value: "AQA" },
-];
-
-const syllabusCodes: AttributeOption[] = [
-  { label: "9709", value: "9709" },
-  { label: "9231", value: "9231" },
-  { label: "8MA0", value: "8MA0" },
-];
-
-const years: AttributeOption[] = Array.from({ length: 10 }, (_, i) => ({
-  label: `${2015 + i}`,
-  value: `${2015 + i}`,
-}));
-
-const sessions: AttributeOption[] = [
-  { label: "June", value: "June" },
-  { label: "November", value: "November" },
-  { label: "March", value: "March" },
-];
-
-const paperNumbers: AttributeOption[] = [
-  { label: "Paper 1", value: "Paper 1" },
-  { label: "Paper 2", value: "Paper 2" },
-  { label: "Paper 3", value: "Paper 3" },
-];
-
-const level: AttributeOption[] = [
-  { label: "P1", value: "P1" },
-  { label: "P2", value: "P2" },
-  { label: "P3", value: "P3" },
-];
-
-const questionTypes: AttributeOption[] = [
-  { label: "Structured Question", value: "Structured Question" },
-  { label: "Multiple Choice", value: "Multiple Choice" },
-  { label: "Short Answer", value: "Short Answer" },
-];
-
-const mathTopics: AttributeOption[] = [
-  { label: "Algebra", value: "Algebra" },
-  { label: "Differentiation", value: "Differentiation" },
-  { label: "Trigonometry", value: "Trigonometry" },
-  { label: "Integration", value: "Integration" },
-  { label: "Quadratics", value: "Quadratics" },
-  { label: "Circular measure", value: "Circular measure" },
-  { label: "Coordinate geometry", value: "Coordinate geometry" },
-];
-
-const difficulties: AttributeOption[] = [
-  { label: "Easy", value: "Easy" },
-  { label: "Moderate", value: "Moderate" },
-  { label: "Hard", value: "Hard" },
-];
-
-const attributeOptions: AttributeOption[] = [
-  { label: "Title", value: "title" },
-  { label: "Content", value: "content" },
-  { label: "Solution", value: "solution" },
-  { label: "Exam Board", value: "examBoard" },
-  { label: "Syllabus Code", value: "syllabusCode" },
-  { label: "Year of Exam", value: "yearOfExam" },
-  { label: "Session", value: "session" },
-  { label: "Paper Number", value: "paperNumber" },
-  { label: "Question Number", value: "questionNumber" },
-  { label: "Question Type", value: "questionType" },
-  { label: "Level", value: "level" },
-  { label: "Math Topic", value: "mathTopic" },
-  { label: "Difficulty", value: "difficulty" },
-];
+import { Question, AttributeOption } from '@/types';
+import { examBoards, syllabusCodes, years, sessions, paperNumbers, questionTypes, level, mathTopics, difficulties, attributeOptions } from '@/constants';
+import QuestionCard from './QuestionCard';
 
 export default function QuestionSearch() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -227,162 +130,6 @@ export default function QuestionSearch() {
     </div>
   );
 
-  const renderQuestionContent = (question: Question) => (
-    <div
-      key={question.id}
-      className="p-4 border rounded shadow-sm bg-white mb-4"
-    >
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-lg mb-2">{question.title}</h2>
-        <button
-          onClick={() => handleDelete(question.id)}
-          className="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-700"
-        >
-          Delete
-        </button>
-      </div>
-      <div className="mb-4">
-        <div>
-          {question.imageUrls && question.imageUrls.length > 0  && <><strong>Images:</strong><div className="flex flex-wrap gap-4 mt-2">
-            {question.imageUrls.map((url, idx) => (
-              <div key={idx} className="w-1/4">
-                <img
-                  src={url}
-                  alt={`Image ${idx + 1}`}
-                  className="rounded-lg border shadow" />
-              </div>
-            ))}
-          </div></>
-          }
-        </div>
-        {displayAttributes.length === 0 || displayAttributes.includes('content') ? (
-          <>
-            <strong>Question:</strong>
-            <div className="mt-2">
-              <Latex>
-                {JSON.parse(question.content)[0]?.questionText.replace(
-                  /\\\\/g,
-                  "\\"
-                )}
-              </Latex>
-            </div>
-            <ul className="list-disc pl-6">
-              {JSON.parse(question.content).map(
-                (
-                  part: { part: string; question: string },
-                  index: Key | null | undefined
-                ) => (
-                  <li key={index} className="mb-2">
-                    <strong>Part {part.part.toUpperCase()}:</strong>{" "}
-                    <Latex>{part.question.replace(/\\\\/g, "\\")}</Latex>
-                  </li>
-                )
-              )}
-            </ul>
-          </>
-        ) : null}
-      </div>
-      {displayAttributes.length === 0 || displayAttributes.includes('solution') ? (
-        <div className="mb-4">
-          <strong>Solution:</strong>
-          <ul className="list-disc pl-6">
-            {JSON.parse(question.solution).map(
-              (
-                solution: {
-                  part: string;
-                  solution: string;
-                  markingScheme:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<any, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<AwaitedReactNode>
-                    | null
-                    | undefined;
-                },
-                index: Key | null | undefined
-              ) => (
-                <li key={index} className="mb-2">
-                  <strong>Part {solution.part.toUpperCase()}:</strong>{" "}
-                  <Latex>{solution.solution.replace(/\\\\/g, "\\")}</Latex>
-                  <div className="text-gray-600 text-sm">
-                    <strong>Marking Scheme:</strong>
-                    <Latex>{solution.markingScheme}</Latex>
-                  </div>
-                </li>
-              )
-            )}
-          </ul>
-        </div>
-      ) : null}
-
-      {displayAttributes.length === 0 || displayAttributes.includes('examBoard') ? (
-        <p>
-          <strong>Exam Board:</strong> {question.examBoard}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('syllabusCode') ? (
-        <p>
-          <strong>Syllabus Code:</strong> {question.syllabusCode}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('yearOfExam') ? (
-        <p>
-          <strong>Year of Exam:</strong> {question.yearOfExam}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('session') ? (
-        <p>
-          <strong>Session:</strong> {question.session}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('paperNumber') ? (
-        <p>
-          <strong>Paper Number:</strong> {question.paperNumber}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('questionNumber') ? (
-        <p>
-          <strong>Question Number:</strong> {question.questionNumber}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('questionType') ? (
-        <p>
-          <strong>Question Type:</strong> {question.questionType}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('level') ? (
-        <p>
-          <strong>Question Level:</strong> {question.level}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('mathTopic') ? (
-        <p>
-          <strong>Math Topic:</strong> {question.mathTopic}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('difficulty') ? (
-        <p>
-          <strong>Difficulty:</strong> {question.difficulty || "N/A"}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('topicsCovered') ? (
-        <p>
-          <strong>Topics Covered:</strong> {question.topicsCovered.join(", ")}
-        </p>
-      ) : null}
-      {displayAttributes.length === 0 || displayAttributes.includes('marksAllocation') ? (
-        <p>
-          <strong>Marks Allocation:</strong>{" "}
-          <Latex>{JSON.stringify(question.marksAllocation, null, 2)}</Latex>
-        </p>
-      ) : null}
-    </div>
-  );
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Question Search</h1>
@@ -444,7 +191,14 @@ export default function QuestionSearch() {
       {error && <p className="text-red-500 mt-4">{error}</p>}
       <div className="mt-8">
         {searchResults.length > 0 ? (
-          searchResults.map(renderQuestionContent)
+          searchResults.map(question => (
+            <QuestionCard
+              key={question.id}
+              question={question}
+              displayAttributes={displayAttributes}
+              onDelete={handleDelete}
+            />
+          ))
         ) : (
           <p>No questions found. Please perform a search.</p>
         )}
