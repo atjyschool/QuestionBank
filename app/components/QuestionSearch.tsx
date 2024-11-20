@@ -96,6 +96,22 @@ const difficulties: AttributeOption[] = [
   { label: "Hard", value: "Hard" },
 ];
 
+const attributeOptions: AttributeOption[] = [
+  { label: "Title", value: "title" },
+  { label: "Content", value: "content" },
+  { label: "Solution", value: "solution" },
+  { label: "Exam Board", value: "examBoard" },
+  { label: "Syllabus Code", value: "syllabusCode" },
+  { label: "Year of Exam", value: "yearOfExam" },
+  { label: "Session", value: "session" },
+  { label: "Paper Number", value: "paperNumber" },
+  { label: "Question Number", value: "questionNumber" },
+  { label: "Question Type", value: "questionType" },
+  { label: "Level", value: "level" },
+  { label: "Math Topic", value: "mathTopic" },
+  { label: "Difficulty", value: "difficulty" },
+];
+
 export default function QuestionSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAttributes, setSelectedAttributes] = useState<
@@ -114,6 +130,7 @@ export default function QuestionSearch() {
   const [searchResults, setSearchResults] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [displayAttributes, setDisplayAttributes] = useState<string[]>([]);
 
   const handleAttributeChange = (category: string, value: string) => {
     setSelectedAttributes((prev) => ({
@@ -160,13 +177,20 @@ export default function QuestionSearch() {
         throw new Error("Failed to delete the question.");
       }
 
-      // Remove the deleted question from the state
       setSearchResults((prev) => prev.filter((q) => q.id !== id));
       alert("Question deleted successfully.");
     } catch (err) {
       console.error(err);
       alert("An error occurred while deleting the question.");
     }
+  };
+
+  const handleDisplayAttributeToggle = (attribute: string) => {
+    setDisplayAttributes(prev =>
+      prev.includes(attribute)
+        ? prev.filter(a => a !== attribute)
+        : [...prev, attribute]
+    );
   };
 
   const renderAttributeSelector = (
@@ -218,128 +242,144 @@ export default function QuestionSearch() {
         </button>
       </div>
       <div className="mb-4">
-      <div>
-        <strong>Images:</strong>
-        <div className="flex flex-wrap gap-4 mt-2">
-          {question.imageUrls.map((url, idx) => (
-            <div key={idx} className="w-1/4">
-              <img
-                src={url} // Use the correct URL path
-                alt={`Image ${idx + 1}`}
-                className="rounded-lg border shadow"
-              />
-              <p className="text-center mt-2 text-sm text-gray-600">
-                Image {idx + 1}
-              </p>
+        <div>
+          {question.imageUrls && question.imageUrls.length > 0  && <><strong>Images:</strong><div className="flex flex-wrap gap-4 mt-2">
+            {question.imageUrls.map((url, idx) => (
+              <div key={idx} className="w-1/4">
+                <img
+                  src={url}
+                  alt={`Image ${idx + 1}`}
+                  className="rounded-lg border shadow" />
+              </div>
+            ))}
+          </div></>
+          }
+        </div>
+        {displayAttributes.length === 0 || displayAttributes.includes('content') ? (
+          <>
+            <strong>Question:</strong>
+            <div className="mt-2">
+              <Latex>
+                {JSON.parse(question.content)[0]?.questionText.replace(
+                  /\\\\/g,
+                  "\\"
+                )}
+              </Latex>
             </div>
-          ))}
-        </div>
+            <ul className="list-disc pl-6">
+              {JSON.parse(question.content).map(
+                (
+                  part: { part: string; question: string },
+                  index: Key | null | undefined
+                ) => (
+                  <li key={index} className="mb-2">
+                    <strong>Part {part.part.toUpperCase()}:</strong>{" "}
+                    <Latex>{part.question.replace(/\\\\/g, "\\")}</Latex>
+                  </li>
+                )
+              )}
+            </ul>
+          </>
+        ) : null}
       </div>
-        <strong>Question:</strong>
-        <div className="mt-2">
-          <Latex>
-            {JSON.parse(question.content)[0]?.questionText.replace(
-              /\\\\/g,
-              "\\"
+      {displayAttributes.length === 0 || displayAttributes.includes('solution') ? (
+        <div className="mb-4">
+          <strong>Solution:</strong>
+          <ul className="list-disc pl-6">
+            {JSON.parse(question.solution).map(
+              (
+                solution: {
+                  part: string;
+                  solution: string;
+                  markingScheme:
+                    | string
+                    | number
+                    | bigint
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | Iterable<ReactNode>
+                    | ReactPortal
+                    | Promise<AwaitedReactNode>
+                    | null
+                    | undefined;
+                },
+                index: Key | null | undefined
+              ) => (
+                <li key={index} className="mb-2">
+                  <strong>Part {solution.part.toUpperCase()}:</strong>{" "}
+                  <Latex>{solution.solution.replace(/\\\\/g, "\\")}</Latex>
+                  <div className="text-gray-600 text-sm">
+                    <strong>Marking Scheme:</strong>
+                    <Latex>{solution.markingScheme}</Latex>
+                  </div>
+                </li>
+              )
             )}
-          </Latex>
+          </ul>
         </div>
-        <ul className="list-disc pl-6">
-          {JSON.parse(question.content).map(
-            (
-              part: { part: string; question: string },
-              index: Key | null | undefined
-            ) => (
-              <li key={index} className="mb-2">
-                <strong>Part {part.part.toUpperCase()}:</strong>{" "}
-                <Latex>{part.question.replace(/\\\\/g, "\\")}</Latex>
-              </li>
-            )
-          )}
-        </ul>
-      </div>
-      <div className="mb-4">
-        <strong>Solution:</strong>
-        <ul className="list-disc pl-6">
-          {JSON.parse(question.solution).map(
-            (
-              solution: {
-                part: string;
-                solution: string;
-                markingScheme:
-                  | string
-                  | number
-                  | bigint
-                  | boolean
-                  | ReactElement<any, string | JSXElementConstructor<any>>
-                  | Iterable<ReactNode>
-                  | ReactPortal
-                  | Promise<AwaitedReactNode>
-                  | null
-                  | undefined;
-              },
-              index: Key | null | undefined
-            ) => (
-              <li key={index} className="mb-2">
-                <strong>Part {solution.part.toUpperCase()}:</strong>{" "}
-                <Latex>{solution.solution.replace(/\\\\/g, "\\")}</Latex>
-                <div className="text-gray-600 text-sm">
-                  <strong>Marking Scheme:</strong>
-                  <Latex>{solution.markingScheme}</Latex>
-                </div>
-              </li>
-            )
-          )}
-        </ul>
-      </div>
+      ) : null}
 
-      <p>
-        <strong>Exam Board:</strong> {question.examBoard}
-      </p>
-      <p>
-        <strong>Syllabus Code:</strong> {question.syllabusCode}
-      </p>
-      <p>
-        <strong>Year of Exam:</strong> {question.yearOfExam}
-      </p>
-      <p>
-        <strong>Session:</strong> {question.session}
-      </p>
-      <p>
-        <strong>Paper Number:</strong> {question.paperNumber}
-      </p>
-      <p>
-        <strong>Question Number:</strong> {question.questionNumber}
-      </p>
-      <p>
-        <strong>Question Type:</strong> {question.questionType}
-      </p>
-      <p>
-        <strong>Question Level:</strong> {question.level}
-      </p>
-      <p>
-        <strong>Math Topic:</strong> {question.mathTopic}
-      </p>
-      <p>
-        <strong>Difficulty:</strong> {question.difficulty || "N/A"}
-      </p>
-      <p>
-        <strong>Topics Covered:</strong> {question.topicsCovered.join(", ")}
-      </p>
-      <p>
-        <strong>Marks Allocation:</strong>{" "}
-        <Latex>{JSON.stringify(question.marksAllocation, null, 2)}</Latex>
-      </p>
-      <p>
-        <small>
-          Created At: {new Date(question.createdAt).toLocaleString()}
-        </small>
-      </p>
-      <p>
-        <small>
-          Updated At: {new Date(question.updatedAt).toLocaleString()}
-        </small>
-      </p>
+      {displayAttributes.length === 0 || displayAttributes.includes('examBoard') ? (
+        <p>
+          <strong>Exam Board:</strong> {question.examBoard}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('syllabusCode') ? (
+        <p>
+          <strong>Syllabus Code:</strong> {question.syllabusCode}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('yearOfExam') ? (
+        <p>
+          <strong>Year of Exam:</strong> {question.yearOfExam}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('session') ? (
+        <p>
+          <strong>Session:</strong> {question.session}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('paperNumber') ? (
+        <p>
+          <strong>Paper Number:</strong> {question.paperNumber}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('questionNumber') ? (
+        <p>
+          <strong>Question Number:</strong> {question.questionNumber}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('questionType') ? (
+        <p>
+          <strong>Question Type:</strong> {question.questionType}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('level') ? (
+        <p>
+          <strong>Question Level:</strong> {question.level}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('mathTopic') ? (
+        <p>
+          <strong>Math Topic:</strong> {question.mathTopic}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('difficulty') ? (
+        <p>
+          <strong>Difficulty:</strong> {question.difficulty || "N/A"}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('topicsCovered') ? (
+        <p>
+          <strong>Topics Covered:</strong> {question.topicsCovered.join(", ")}
+        </p>
+      ) : null}
+      {displayAttributes.length === 0 || displayAttributes.includes('marksAllocation') ? (
+        <p>
+          <strong>Marks Allocation:</strong>{" "}
+          <Latex>{JSON.stringify(question.marksAllocation, null, 2)}</Latex>
+        </p>
+      ) : null}
     </div>
   );
 
@@ -371,6 +411,28 @@ export default function QuestionSearch() {
         {renderAttributeSelector("level", level)}
         {renderAttributeSelector("mathTopic", mathTopics)}
         {renderAttributeSelector("difficulty", difficulties)}
+      </div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold mb-2">Select attributes to display:</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {attributeOptions.map(attr => (
+            <div key={attr.value} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id={`display-${attr.value}`}
+                checked={displayAttributes.includes(attr.value)}
+                onChange={() => handleDisplayAttributeToggle(attr.value)}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <label
+                htmlFor={`display-${attr.value}`}
+                className="text-sm font-medium text-gray-700"
+              >
+                {attr.label}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
       <button
         onClick={handleSearch}
