@@ -23,10 +23,20 @@ async function main() {
     const { Metadata, QuestionContent, SolutionContent } = question;
 
     // Handle structured parts of questions and solutions
-    const structuredQuestionParts = QuestionContent.Parts.map((part) => ({
-      part: part.Part,
-      question: part.Question,
-    }));
+    const structuredQuestionParts =
+      QuestionContent.Parts.length > 0
+        ? QuestionContent.Parts.map((part) => ({
+            questionText: QuestionContent.Text || '',
+            part: part.Part,
+            question: part.Question,
+          }))
+        : [
+            {
+              questionText: QuestionContent.Text || '',
+              part: 'n/a', // Placeholder for missing parts
+              question: 'No parts provided.', // Default message
+            },
+          ];
 
     const structuredSolutionParts = SolutionContent.Parts.map((part) => ({
       part: part.Part,
