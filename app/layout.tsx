@@ -31,6 +31,11 @@ export default function RootLayout({
           href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css"
           rel="stylesheet"
         />
+        <script
+          id="MathJax-script"
+          async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+        ></script>
       </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -14,6 +14,8 @@ import "katex/dist/katex.min.css";
 import { Question, AttributeOption } from '@/types';
 import { examBoards, syllabusCodes, years, sessions, paperNumbers, questionTypes, level, mathTopics, difficulties, attributeOptions } from '@/constants';
 import QuestionCard from './QuestionCard';
+import PDFGenerator from './PDFGenerator'
+
 
 export default function QuestionSearch() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,6 +36,7 @@ export default function QuestionSearch() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [displayAttributes, setDisplayAttributes] = useState<string[]>([]);
+  const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
 
   const handleAttributeChange = (category: string, value: string) => {
     setSelectedAttributes((prev) => ({
@@ -93,6 +96,14 @@ export default function QuestionSearch() {
       prev.includes(attribute)
         ? prev.filter(a => a !== attribute)
         : [...prev, attribute]
+    );
+  };
+
+  const handleQuestionSelect = (id: number) => {
+    setSelectedQuestions(prev =>
+      prev.includes(id)
+        ? prev.filter(qId => qId !== id)
+        : [...prev, id]
     );
   };
 
@@ -188,15 +199,22 @@ export default function QuestionSearch() {
       >
         {isLoading ? "Searching..." : "Search"}
       </button>
+      
       {error && <p className="text-red-500 mt-4">{error}</p>}
+      <PDFGenerator
+              questions={searchResults.filter(q => selectedQuestions.includes(q.id))}
+              displayAttributes={displayAttributes}
+      />
       <div className="mt-8">
         {searchResults.length > 0 ? (
           searchResults.map(question => (
             <QuestionCard
-              key={question.id}
-              question={question}
-              displayAttributes={displayAttributes}
-              onDelete={handleDelete}
+            key={question.id}
+            question={question}
+            displayAttributes={displayAttributes}
+            onDelete={handleDelete}
+            onSelect={handleQuestionSelect}
+            isSelected={selectedQuestions.includes(question.id)}
             />
           ))
         ) : (
